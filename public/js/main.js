@@ -28,8 +28,12 @@ const loadCountryList = () => {
 const loadFlagIcon = (element) => {
     for(let flagCode in countryList) {
         if(flagCode === element.value) {
-            const imgTag = element.parentElement.querySelector("img");
-            imgTag.src = `https://flagsapi.com/${countryList[flagCode]}/flat/64.png`;
+            fetch(`http://localhost:3000/flag/${countryList[flagCode]}`)
+            .then((response) => response.json())
+            .then((data) => {
+                const imgTag = element.parentElement.querySelector("img");
+                imgTag.src = data.flagURL;
+            });
         }
     }
 }
@@ -39,8 +43,7 @@ const getExchangeRate = async () => {
     const info = document.querySelector(".footer p");
     let inputValue = +input.value;
 
-    const apiKey = "13d4cc3c51842a1e34a65265";
-    const url = `https://v6.exchangerate-api.com/v6/${apiKey}/latest/${selectFrom.value}`;
+    const url = `http://localhost:3000/exchange-rate/${selectFrom.value}`;
     const requestSearch = await fetch(url);
     const data = await requestSearch.json();
 
