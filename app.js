@@ -26,11 +26,16 @@ app.get("/exchange-rate/:selectFrom", async (req, res) => {
     }
 });
 
-app.get("/flag/:flagCode", (req, res) => {
+app.get("/flag/:flagCode", async (req, res) => {
     const flagCode = req.params.flagCode;
     
-    const flagURL = `https://flagsapi.com/${flagCode}/flat/64.png`;
-    res.json({flagURL});
+    try {
+        const flagURL = `https://flagsapi.com/${flagCode}/flat/64.png`;
+        res.json({flagURL});
+    }
+    catch(error) {
+        res.send(error.message);
+    }
 });
 
 app.listen(port, () => console.log(`Server running on port ${port}`));

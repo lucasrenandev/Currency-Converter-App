@@ -25,15 +25,14 @@ const loadCountryList = () => {
     }
 }
 
-const loadFlagIcon = (element) => {
+const loadFlagIcon = async (element) => {
     for(let flagCode in countryList) {
         if(flagCode === element.value) {
-            fetch(`http://localhost:3000/flag/${countryList[flagCode]}`)
-            .then((response) => response.json())
-            .then((data) => {
-                const imgTag = element.parentElement.querySelector("img");
-                imgTag.src = data.flagURL;
-            });
+            const url = `http://localhost:3000/flag/${countryList[flagCode]}`;
+            const response = await fetch(url);
+            const data = await response.json();
+            const imgTag = element.parentElement.querySelector("img");
+            imgTag.src = data.flagURL;
         }
     }
 }
@@ -44,8 +43,8 @@ const getExchangeRate = async () => {
     let inputValue = +input.value;
 
     const url = `http://localhost:3000/exchange-rate/${selectFrom.value}`;
-    const requestSearch = await fetch(url);
-    const data = await requestSearch.json();
+    const response = await fetch(url);
+    const data = await response.json();
 
     if(inputValue === 0) {
         input.value = 1;
